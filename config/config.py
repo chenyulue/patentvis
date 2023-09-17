@@ -47,5 +47,12 @@ df = {
         '年份': range(2011, 2011+6),
         '地区': ['国内']*3 + ['国外']*3,
         '申请量(项)': np.random.randint(23, 57, size=6)
-    })
+    }),
+    'pie': pd.DataFrame({
+        '技术分支': ['X射线', '光学测量', '电子测量', '探针测量'],
+        '申请量(项)': np.random.randint(100, 300, size=4)
+    }),
+    'treemap': pd.read_csv('./assets/tech_treemap.csv'),
+    'waterfall': pd.read_csv('./assets/tech_comp.csv'),
+    'dualbar': pd.read_csv('./assets/tech_dualbar.csv')
 }
