@@ -6,6 +6,11 @@ import plotly.io as pio
 from config import config
 from config.config import blue, red, df
 
+st.set_page_config(
+    page_title='趋势类绘图', page_icon='📈',
+    layout='wide'
+)
+
 pio.templates.default = 'plotly_white+mytheme'
 
 options = {
@@ -20,7 +25,9 @@ st.markdown("**注意**：上传的数据格式请参照后面的示例，总体
 
 
 file_uploaded = st.file_uploader(
-    '**上传CSV数据文件**', type=['csv'], help='上传CSV格式的数据文件')
+    '**上传CSV数据文件**', type=['csv'], help='上传CSV格式的数据文件，其他格式数据暂不支持')
+
+data_display = st.empty()
 
 st.divider()
 
@@ -68,6 +75,9 @@ trend = {
 
 if file_uploaded is not None:
     data = pd.read_csv(file_uploaded)
+    with data_display.container():
+        st.markdown('读取数据前3行展示：')
+        st.dataframe(data.head(3), use_container_width=True, hide_index=True)
 
     columns = data.columns
 

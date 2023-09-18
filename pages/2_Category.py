@@ -9,7 +9,7 @@ from config import config
 from config.config import blue, red, df
 
 st.set_page_config(
-    page_title='构成类绘图',
+    page_title='构成类绘图', page_icon='📊',
     layout='wide'
 )
 
@@ -29,7 +29,9 @@ st.markdown("**注意**：上传的数据格式请参照后面的示例，总体
 
 
 file_uploaded = st.file_uploader(
-    '**上传CSV数据文件**', type=['csv'], help='上传CSV格式的数据文件')
+    '**上传CSV数据文件**', type=['csv'], help='上传CSV格式的数据文件，其他格式数据暂不支持')
+
+data_display = st.empty()
 
 st.divider()
 
@@ -52,6 +54,7 @@ def pie(data, values, names, insidelabel=False, is_hole=False,
     fig = px.pie(data, values=values, names=names, width=width, height=height)
     fig.update_traces(
         direction='clockwise',
+        textfont_family=config.font, textfont_size=config.size-2,
     )
     if insidelabel:
         fig.update_traces(
@@ -89,6 +92,7 @@ def waterfall(data, x, y, color, font_color):
         totals_marker_color=color,
         decreasing_marker_color=color,
         textfont_color=font_color,
+        textfont_family=config.font, textfont_size=config.size-2,
     ))
     fig.update_layout(
         yaxis_title_text=y,
@@ -106,25 +110,27 @@ def dualbar(df, x, y, cat, space=50, autorange=None, width=width, height=height)
     size = len(left_data[x])
 
     fig = go.Figure(data=[
-        go.Bar(
-            x=[space]*size, y=left_data[y], 
-            marker_color='white', marker_line_color='white',
-            orientation='h', showlegend=False,
-        ),
+        # go.Bar(
+        #     x=[space]*size, y=left_data[y], 
+        #     marker_color='white', marker_line_color='white',
+        #     orientation='h', showlegend=False,
+        # ),
         go.Bar(
             name=cat_data[0], x=left_data[x], y=left_data[y], 
-            orientation='h', 
+            orientation='h', base=[space]*size,
             text=left_data[x], textposition='outside',
+            textfont_family=config.font, textfont_size=config.size-2,
         ),
-        go.Bar(
-            x=[-space]*size, y=right_data[y], 
-            marker_color='white', marker_line_color='white',
-            orientation='h', showlegend=False,
-        ),
+        # go.Bar(
+        #     x=[-space]*size, y=right_data[y], 
+        #     marker_color='white', marker_line_color='white',
+        #     orientation='h', showlegend=False,
+        # ),
         go.Bar(
             name=cat_data[1], x=-right_data[x], y=right_data[y], 
-            orientation='h', 
+            orientation='h', base=[-space]*size,
             text=right_data[x], textposition='outside',
+            textfont_family=config.font, textfont_size=config.size-2,
         ),
         
         go.Scatter(
@@ -141,6 +147,7 @@ def dualbar(df, x, y, cat, space=50, autorange=None, width=width, height=height)
             showline=False,
             showticklabels=False,
             automargin='height+top',
+            zeroline=False,
         ),
         yaxis=dict(
             showgrid=False,
@@ -158,6 +165,7 @@ def dualbar(df, x, y, cat, space=50, autorange=None, width=width, height=height)
         xref='x domain', yref='y domain',
         text=x,
         showarrow=False,
+        font_family=config.font, font_size=config.size-2,
         # align='right', valign='bottom',
     )
     return fig
@@ -173,6 +181,9 @@ category_plot = {
 
 if file_uploaded is not None:
     data = pd.read_csv(file_uploaded)
+    with data_display.container():
+        st.markdown('读取数据前3行展示：')
+        st.dataframe(data.head(3), use_container_width=True, hide_index=True)
 
     columns = data.columns
 

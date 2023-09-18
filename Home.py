@@ -9,6 +9,10 @@ sys.path.append(os.getcwd())
 import streamlit as st
 import pandas as pd
 
+st.set_page_config(
+    page_title='主页', page_icon='🏠',
+)
+
 st.title('专利分析统一绘图平台')
 st.write('---')
 st.markdown('''

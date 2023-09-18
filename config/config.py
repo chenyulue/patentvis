@@ -54,5 +54,7 @@ df = {
     }),
     'treemap': pd.read_csv('./assets/tech_treemap.csv'),
     'waterfall': pd.read_csv('./assets/tech_comp.csv'),
-    'dualbar': pd.read_csv('./assets/tech_dualbar.csv')
+    'dualbar': pd.read_csv('./assets/tech_dualbar.csv'),
+    'rank_single': pd.read_csv('./assets/rank_single.csv'),
+    'rank_multi': pd.read_csv('./assets/rank_multi.csv')
 }
