@@ -49,6 +49,7 @@ with st.expander('调节图像尺寸（👈点击这里展开调整）'):
     height = col3.number_input('高度', min_value=600.0, max_value=None, value=600.0,  
                             step=50.0, format='%.0f')
 
+
 def pie(data, values, names, insidelabel=False, is_hole=False,
         width=width, height=height):
     fig = px.pie(data, values=values, names=names, width=width, height=height)
@@ -64,6 +65,7 @@ def pie(data, values, names, insidelabel=False, is_hole=False,
         fig.update_traces(hole=0.4)
     return fig
 
+
 def treemap(data, path, values, color, labels=None, width=width, height=height):
     fig = px.treemap(data, path=path, values=values, color=color,
                      width=width, height=height)
@@ -73,6 +75,7 @@ def treemap(data, path, values, color, labels=None, width=width, height=height):
         )
     return fig
 
+
 def sunburst(data, path, values, color, labels=None, width=width, height=height):
     fig = px.sunburst(data, path=path, values=values, color=color,
                       width=width, height=height)
@@ -81,6 +84,7 @@ def sunburst(data, path, values, color, labels=None, width=width, height=height)
             textinfo='+'.join(labels)
         )
     return fig
+
 
 def waterfall(data, x, y, color, font_color):
     fig = go.Figure()
@@ -98,6 +102,7 @@ def waterfall(data, x, y, color, font_color):
         yaxis_title_text=y,
     )
     return fig
+
 
 def dualbar(df, x, y, cat, space=50, autorange=None, width=width, height=height):
     cat_data = np.unique(df[cat])

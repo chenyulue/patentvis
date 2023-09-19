@@ -45,6 +45,7 @@ with st.expander('调节图像尺寸（👈点击这里展开调整）'):
     height = col3.number_input('高度', min_value=400.0, max_value=None, value=800*0.618,  
                             step=50.0, format='%.0f')
 
+
 def line_trend(data, x='年份', y='申请量(项)', color=None,
                  width=width, height=height):
     if color is None:
@@ -52,12 +53,14 @@ def line_trend(data, x='年份', y='申请量(项)', color=None,
     
     return px.line(data, x=x, y=y, color=color, width=width, height=height)
 
+
 def area_trend(data, x='年份', y='申请量(项)', color=None,
                  width=width, height=0.618*width):
     if color is None:
         return px.area(data, x=x, y=y, width=width, height=height,)
     
     return px.area(data, x=x, y=y, color=color, width=width, height=height)
+
 
 def bar_trend(data, x, y, color=None, barmode='relative',
               width=width, height=0.618*width):

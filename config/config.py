@@ -59,4 +59,5 @@ df = {
     'rank_multi': pd.read_csv('./assets/rank_multi.csv'),
     'bubble': pd.read_csv('./assets/bubble.csv'),
     'bubble_pie': pd.read_csv('./assets/bubble_pie.csv'),
+    'sankey': pd.read_csv('./assets/sankey.csv')
 }
