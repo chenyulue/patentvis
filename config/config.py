@@ -7,7 +7,7 @@ import pandas as pd
 import os
 cwd = os.getcwd()
 
-font = f'{cwd}\\font\\simhei.ttf'
+font = f'{cwd}/font/simhei.ttf'
 size = 18
 
 pio.templates['mytheme'] = go.layout.Template(

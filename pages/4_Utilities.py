@@ -82,7 +82,7 @@ def scatter_pie(data, x, y, cat, colors=px.colors.qualitative.Plotly,
     # 长宽混合数据格式
     # plt.rcParams['font.sans-serif'] = ['SimHei']  # 用来正常显示中文标签
     plt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
-    font=FontProperties(fname=f'{cwd}\\font\\simhei.ttf')
+    font=FontProperties(fname=f'{cwd}/font/simhei.ttf')
 
     dpi = plt.rcParams['figure.dpi']
     pie_seg = np.unique(data[cat])
