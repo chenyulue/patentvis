@@ -9,9 +9,13 @@ import plotly.io as pio
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import matplotlib.collections as mcollections
+from matplotlib.font_manager import FontProperties
 
 from config import config
 from config.config import blue, red, df
+
+import os
+cwd = os.getcwd()
 
 st.set_page_config(
     page_title='实用图表', page_icon='📊',
@@ -76,8 +80,9 @@ def scatter_pie(data, x, y, cat, colors=px.colors.qualitative.Plotly,
                 rscale=1.4, xscale=3.5, yscale=2, showlabel=True,
                 width=width, height=height):
     # 长宽混合数据格式
-    plt.rcParams['font.sans-serif'] = ['SimHei']  # 用来正常显示中文标签
+    # plt.rcParams['font.sans-serif'] = ['SimHei']  # 用来正常显示中文标签
     plt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
+    font=FontProperties(fname=f'{cwd}\\font\\simhei.ttf')
 
     dpi = plt.rcParams['figure.dpi']
     pie_seg = np.unique(data[cat])
@@ -109,16 +114,18 @@ def scatter_pie(data, x, y, cat, colors=px.colors.qualitative.Plotly,
                 handles = wedges
 
             if showlabel and tmp_data.sum():
-                ax.text(i*xscale, j*yscale, f'{tmp_data.sum()}', ha='center', va='center')
+                ax.text(i*xscale, j*yscale, f'{tmp_data.sum()}', 
+                        ha='center', va='center',
+                        fontproperties=font,)
 
     ax.grid(True)
     ax.yaxis.set_zorder(0)
     ax.xaxis.set_zorder(0)
-    ax.set_xticks([i*xscale for i in range(len(rows))], labels=rows)
-    ax.set_yticks([j*yscale for j in range(len(cols))], labels=cols)
+    ax.set_xticks([i*xscale for i in range(len(rows))], labels=rows, fontproperties=font)
+    ax.set_yticks([j*yscale for j in range(len(cols))], labels=cols, fontproperties=font)
 
     if handles is not None:
-        ax.legend(handles, pie_seg, loc='upper left',
+        ax.legend(handles, pie_seg, loc='upper left', prop=font, 
                   bbox_to_anchor=(1, 1), frameon=False)
 
     return fig
@@ -188,22 +195,21 @@ if file_uploaded is not None:
 
     with st.expander('##### 绘图区 (带*号为必选)', expanded=True):
         if utility_type == 'scatter_plot':
-            xcol, ycol, sizecol = st.columns(3)
+            xcol, sizecol, showlabelcol = st.columns(3)
             x = xcol.multiselect(
                 'X轴数据*', options=columns,
                 placeholder='X轴数据对应第1列...',
                 max_selections=1,
             )
-            y = ycol.multiselect(
+            size_max = sizecol.number_input(
+                '气泡尺寸上限', min_value=10, max_value=None, step=5, value=55,
+            )
+            showlabel = showlabelcol.checkbox('显示数值标签')
+            y = st.multiselect(
                 'Y轴数据*', options=columns, 
                 placeholder='Y轴数据对应剩余列...',
                 help='该选项为多选，选择Y轴对应的项目',
             )
-            with sizecol.container():
-                showlabel = st.checkbox('显示数值标签')
-                size_max = st.number_input(
-                    '气泡尺寸上限', min_value=10, max_value=None, step=5, value=55,
-                )
 
             if x and y:
                 data = data.melt(id_vars=x[0], value_vars=y)

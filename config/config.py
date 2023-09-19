@@ -4,7 +4,10 @@ import plotly.io as pio
 import numpy as np
 import pandas as pd
 
-font = 'SimHei'
+import os
+cwd = os.getcwd()
+
+font = f'{cwd}\\font\\simhei.ttf'
 size = 18
 
 pio.templates['mytheme'] = go.layout.Template(
@@ -12,13 +15,13 @@ pio.templates['mytheme'] = go.layout.Template(
         title_font_family=font,
         title_font_size=size,
         tickfont_family=font,
-        tickfont_size=size-2,
+        tickfont_size=size-4,
     ),
     layout_yaxis=dict(
         title_font_family=font,
         title_font_size=size,
         tickfont_family=font,
-        tickfont_size=size-2,
+        tickfont_size=size-4,
     ),
     layout_legend=dict(
         font_family=font,
@@ -28,7 +31,7 @@ pio.templates['mytheme'] = go.layout.Template(
     ),
     data_scatter=[dict(
         textfont_family=font,
-        textfont_size=size-2,
+        textfont_size=size-4,
     )],
 )
 
