@@ -34,8 +34,11 @@ st.markdown("**注意**：气泡图和桑基图的数据格式都采用“宽”
 )
 
 
+
 file_uploaded = st.file_uploader(
-    '**上传CSV数据文件**', type=['csv'], help='上传CSV格式的数据文件，其他格式数据暂不支持')
+    '**上传CSV数据文件**', type=['csv', 'xlsx', 'xls'], help='上传CSV或excel文件格式的数据文件，其他格式数据暂不支持')
+
+sheet_select = st.empty()
 
 data_display = st.empty()
 
@@ -184,7 +187,15 @@ utility = {
 }
 
 if file_uploaded is not None:
-    data = pd.read_csv(file_uploaded)
+    try:
+        data = pd.read_csv(file_uploaded)
+    except:
+        xl = pd.ExcelFile(file_uploaded)
+        sheet = sheet_select.selectbox(
+            '🧾**读取哪一个工作表？**', options=xl.sheet_names,
+            index=0, help='默认选中第一个工作表'
+        )
+        data = xl.parse(sheet)
     with data_display.container():
         st.markdown('读取数据前3行展示：')
         st.dataframe(data.head(3), use_container_width=True, hide_index=True)
