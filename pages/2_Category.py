@@ -51,6 +51,24 @@ with st.expander('调节图像尺寸（👈点击这里展开调整）'):
     height = col3.number_input('高度', min_value=600.0, max_value=None, value=600.0,  
                             step=50.0, format='%.0f')
 
+    col4, col5 = st.columns(2)
+    tmargin = col4.number_input('顶部页边空白/像素', min_value=5, max_value=None, value=100, step=5)
+    bmargin = col5.number_input('底部页边空白/像素', min_value=5, max_value=None, value=80, step=5)
+
+    col6, col7 = st.columns(2)
+    lmargin = col6.number_input('左边页边空白/像素', min_value=5, max_value=None, value=80, step=5)
+    rmargin = col7.number_input('右边页边空白/像素', min_value=5, max_value=None, value=80, step=5)
+
+save_config = {
+  'toImageButtonOptions': {
+    'format': 'png', # one of png, svg, jpeg, webp
+    'filename': options[cat_type],
+    'height': height,
+    'width': width,
+    'scale': 3 # Multiply title/legend/axis/canvas sizes by this factor
+  }
+}
+
 
 def pie(data, values, names, insidelabel=False, is_hole=False,
         width=width, height=height):
@@ -223,7 +241,7 @@ if file_uploaded is not None:
         
             if values and names:
                 fig = pie(data, values[0], names[0], insidelabel, is_hole, width=width, height=height)
-                st.plotly_chart(fig, use_container_width=False, theme=None)
+                st.plotly_chart(fig, use_container_width=False, theme=None, config=save_config)
 
         elif cat_type == 'tree_plot' or cat_type == 'sunburst_plot':
             label_map = {
@@ -264,7 +282,14 @@ if file_uploaded is not None:
                 fig = category_plot[cat_type](
                     data, path, values[0], color[0], labels
                 )
-                st.plotly_chart(fig, use_container_width=False, theme=None)
+                fig.update_layout(
+                    margin_autoexpand=True,
+                    yaxis_automargin=True,
+                    xaxis_automargin=True,
+                    margin_t=tmargin, margin_b=bmargin, 
+                    margin_l=lmargin, margin_r=rmargin,
+                )
+                st.plotly_chart(fig, use_container_width=False, theme=None, config=save_config)
 
         elif cat_type == 'waterfall_plot':
             xcol, ycol = st.columns(2)
@@ -287,8 +312,13 @@ if file_uploaded is not None:
                 fig = waterfall(data, x[0], y[0], color, font_color)
                 fig.update_layout(
                     plot_bgcolor='white',
+                    margin_autoexpand=True,
+                    yaxis_automargin=True,
+                    xaxis_automargin=True,
+                    margin_t=tmargin, margin_b=bmargin, 
+                    margin_l=lmargin, margin_r=rmargin,
                 )
-                st.plotly_chart(fig, use_container_width=False, theme=None)
+                st.plotly_chart(fig, use_container_width=False, theme=None, config=save_config)
 
         elif cat_type == 'dualbar_plot':
             xcol, ycol, catcol = st.columns(3)
@@ -321,8 +351,13 @@ if file_uploaded is not None:
                 fig = dualbar(data, x[0], y[0], cat[0], space, autorange, width=width, height=height)
                 fig.update_layout(
                     plot_bgcolor='white',
+                    margin_autoexpand=True,
+                    yaxis_automargin=True,
+                    xaxis_automargin=True,
+                    margin_t=tmargin, margin_b=bmargin, 
+                    margin_l=lmargin, margin_r=rmargin,
                 )
-                st.plotly_chart(fig, use_container_width=False, theme=None)
+                st.plotly_chart(fig, use_container_width=False, theme=None, config=save_config)
 
         st.divider()
 

@@ -58,6 +58,25 @@ with st.expander('调节图像尺寸（👈点击这里展开调整）'):
     height = col3.number_input('高度', min_value=400.0, max_value=None, value=800*0.618,  
                             step=50.0, format='%.0f')
 
+    col4, col5 = st.columns(2)
+    tmargin = col4.number_input('顶部页边空白/像素', min_value=5, max_value=None, value=100, step=5)
+    bmargin = col5.number_input('底部页边空白/像素', min_value=5, max_value=None, value=80, step=5)
+
+    col6, col7 = st.columns(2)
+    lmargin = col6.number_input('左边页边空白/像素', min_value=5, max_value=None, value=80, step=5)
+    rmargin = col7.number_input('右边页边空白/像素', min_value=5, max_value=None, value=80, step=5)
+
+save_config = {
+  'toImageButtonOptions': {
+    'format': 'png', # one of png, svg, jpeg, webp
+    'filename': options[utility_type],
+    'height': height,
+    'width': width,
+    'scale': 3 # Multiply title/legend/axis/canvas sizes by this factor
+  }
+}
+
+
 # Plotting functions
 
 def scatter_plot(data, x, y, size, showlabel=True, size_max=55, 
@@ -234,8 +253,13 @@ if file_uploaded is not None:
                     xaxis_title_text='',
                     yaxis_title_text='',
                     plot_bgcolor='white',
+                    margin_autoexpand=True,
+                    yaxis_automargin=True,
+                    xaxis_automargin=True,
+                    margin_t=tmargin, margin_b=bmargin, 
+                    margin_l=lmargin, margin_r=rmargin,
                 )
-                st.plotly_chart(fig, use_container_width=False, theme=None)
+                st.plotly_chart(fig, use_container_width=False, theme=None, config=save_config)
 
         elif utility_type == 'scatter_pie':
             xcol, catcol = st.columns(2)
@@ -284,12 +308,14 @@ if file_uploaded is not None:
             )
             fig = sankey(data, showlinkcolor=showlinkcolor,
                         width=width, height=height)
-            # fig.update_layout(
-            #         xaxis_title_text='',
-            #         yaxis_title_text='',
-            #         plot_bgcolor='white',
-            #     )
-            st.plotly_chart(fig, use_container_width=False, theme=None)
+            fig.update_layout(
+                    margin_autoexpand=True,
+                    yaxis_automargin=True,
+                    xaxis_automargin=True,
+                    margin_t=tmargin, margin_b=bmargin, 
+                    margin_l=lmargin, margin_r=rmargin,
+                )
+            st.plotly_chart(fig, use_container_width=False, theme=None, config=save_config)
         
         st.divider()
 
@@ -304,7 +330,7 @@ if file_uploaded is not None:
             if utility_type == 'scatter_plot' or utility_type == 'sankey_plot':
                 pio.write_image(fig, f'tmp.{ext}', scale=1 if ext=='svg' else 3)
             elif utility_type == 'scatter_pie':
-                fig.savefig(f'tmp.{ext}', bbox_inches='tight')
+                fig.savefig(f'tmp.{ext}', bbox_inches='tight', dpi=300)
 
             with open(f'tmp.{ext}', 'rb') as file:
                 st.download_button(

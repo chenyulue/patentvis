@@ -47,6 +47,23 @@ with st.expander('调节图像尺寸（👈点击这里展开调整）'):
                             step=50.0, format='%.0f',)
     height = col3.number_input('高度', min_value=400.0, max_value=None, value=800*0.618,  
                             step=50.0, format='%.0f')
+    col4, col5 = st.columns(2)
+    tmargin = col4.number_input('顶部页边空白/像素', min_value=5, max_value=None, value=100, step=5)
+    bmargin = col5.number_input('底部页边空白/像素', min_value=5, max_value=None, value=80, step=5)
+
+    col6, col7 = st.columns(2)
+    lmargin = col6.number_input('左边页边空白/像素', min_value=5, max_value=None, value=80, step=5)
+    rmargin = col7.number_input('右边页边空白/像素', min_value=5, max_value=None, value=80, step=5)
+
+save_config = {
+  'toImageButtonOptions': {
+    'format': 'png', # one of png, svg, jpeg, webp
+    'filename': options[rank_type],
+    'height': height,
+    'width': width,
+    'scale': 3 # Multiply title/legend/axis/canvas sizes by this factor
+  }
+}
 
 def bar_rank(data, x, y, barmode='relative', is_vertical=False,
               width=width, height=0.618*width):
@@ -153,6 +170,11 @@ if file_uploaded is not None:
                 fig.update_layout(
                     plot_bgcolor='white',
                     legend_title=color[0] if color else '',
+                    margin_autoexpand=True,
+                    yaxis_automargin=True,
+                    xaxis_automargin=True,
+                    margin_t=tmargin, margin_b=bmargin, 
+                    margin_l=lmargin, margin_r=rmargin,
                 )
                 
                 if is_vertical:
@@ -169,7 +191,7 @@ if file_uploaded is not None:
                         yaxis_title_text='',
                         xaxis_title_text=y[0],
                     )
-                st.plotly_chart(fig, use_container_width=False, theme=None)
+                st.plotly_chart(fig, use_container_width=False, theme=None, config=save_config)
 
             st.divider()
 
