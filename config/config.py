@@ -15,13 +15,15 @@ pio.templates['mytheme'] = go.layout.Template(
         title_font_family=font,
         title_font_size=size,
         tickfont_family=font,
-        tickfont_size=size-4,
+        tickfont_size=size-2,
+        gridcolor='#D8D8D8',
     ),
     layout_yaxis=dict(
         title_font_family=font,
         title_font_size=size,
         tickfont_family=font,
-        tickfont_size=size-4,
+        tickfont_size=size-2,
+        gridcolor='#D8D8D8',
     ),
     layout_legend=dict(
         font_family=font,
@@ -31,7 +33,7 @@ pio.templates['mytheme'] = go.layout.Template(
     ),
     data_scatter=[dict(
         textfont_family=font,
-        textfont_size=size-4,
+        textfont_size=size-2,
     )],
 )
 
