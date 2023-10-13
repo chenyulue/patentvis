@@ -30,6 +30,11 @@ pio.templates['mytheme'] = go.layout.Template(
         font_size=size-4,
         title_font_family=font,
         title_font_size=size-4,
+        x=0, y=1, 
+        xref='paper', yref='paper',
+        xanchor='left', yanchor='bottom',
+        orientation='h',
+        title_text='',
     ),
     data_scatter=[dict(
         textfont_family=font,
